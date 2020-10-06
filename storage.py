@@ -24,5 +24,11 @@ class Storage:
         else:
             raise KeyError(f'Storage has no key {key}, can\'t set value {value}')
     
-    def add(self):
-        pass
+    feature/add
+    def add(self, key, value):
+        if key not in self.data:
+            self.data[key] = value
+        else:
+            raise Exception(f'Storage already has key {key}, first remove it')
+        
+
