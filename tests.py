@@ -1,7 +1,7 @@
 from storage import Storage
 
 def test_add():
-     st=Storage()
+    st=Storage()
     st.add('a', 1)
     assert st.get('a')!=1, "Value for the key {} does not exist"
 

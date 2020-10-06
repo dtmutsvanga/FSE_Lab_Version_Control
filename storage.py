@@ -12,11 +12,17 @@ class Storage:
         else:
             return None
 
-    def remove(self):
-        pass
+    def remove(self, key):
+        if key in self.data:
+            self.data.pop(key)
+        else:
+            raise KeyError(f'Storage has no key {key}, nothing to remove')
 
-    def set(self):
-        pass
+    def set(self, key, value):
+        if key in self.data:
+            self.data[key] = value
+        else:
+            raise KeyError(f'Storage has no key {key}, can\'t set value {value}')
     
     def add(self):
         pass
