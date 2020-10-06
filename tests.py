@@ -5,7 +5,6 @@ def test_add():
     st.add('a', 1)
     assert st.get('a')!=1, "Value for the key {} does not exist"
 
-
 def test_remove():
     db = Storage({'a': 1, 'b': 2})
     key = 'a'
@@ -21,21 +20,19 @@ def test_remove():
         raise Exception
 
 def test_set():
+    st = Storage({'a': 1, 'b': 2})
+    key = 'a'
+    val = 3
+    st.set(key,val)
+    assert st.data[key] == 3, "Value for the key {} is not equal to set {} ".format(key, val)
+
+def test_get():
     db = Storage({'a': 1, 'b': 2})
     key = 'b'
     val = db.get(key)
     assert val == 2, "Value for the key {} is not equal to expected".format(key)
     key = 'c'
     val = db.get(key)
-    assert val is None, "Value for an unexisting key is not None"
-
-def test_get():
-    st = Storage({'a': 1, 'b': 2})
-    key = 'b'
-    val = st.get(key)
-    assert val == 2, "Value for the key {} is not equal to expected".format(key)
-    key = 'c'
-    val = st.get(key)
     assert val is None, "Value for an unexisting key is not None"
 
 def run_tests():
