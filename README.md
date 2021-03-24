@@ -25,7 +25,7 @@ The main contributions include:
 Experiments_results.ipynb - consists of experiments results (train/test metrics, their averaging and plotting)
 You don't have to execute cells in this file. Just obtain the results.
 
-[`Report.ipynb`]([Report_ntbk]) - consists of subblocks for different tasks:
+[`Report.ipynb`](https://github.com/Albly/UnsupSeg/blob/master/Report.ipynb) - consists of subblocks for different tasks:
 1. Dataloaders testing (for TIMIT, ArabicSpeech datasets).
 2. Saving real bounds and phoneme labels into hdf5 file (for TIMIT).
 3. Test pre-trained model on a single audio file from the test data set.
