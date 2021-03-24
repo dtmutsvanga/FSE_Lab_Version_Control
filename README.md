@@ -1,33 +1,153 @@
-### Lab on Version Control
+[Experiments_ntbk]: https://github.com/Albly/UnsupSeg/blob/master/Experiments_results.ipynb 
+[Report_ntbk]: https://github.com/Albly/UnsupSeg/blob/master/Report.ipynb
+[Original_paper_GH]: https://github.com/felixkreuk/UnsupSeg
+[Original_paper]: https://arxiv.org/abs/2007.13465
 
-This repository is an implementation of very simple storage based on Python dictionary.
+# Self-Supervised Contrastive Learning for Unsupervised Phoneme Segmentation. ML course project, Skoltech.
+## General Description
+This repository is an unofficial `Python` replication and implementation of the paper ["Self-Supervised Con-trastive Learning for Unsupervised Phoneme Segmentation(Kreuk et al., 2020)](https://arxiv.org/abs/2007.13465). 
 
-The storage supports four operations:
-* **add**: adds `<key,value>` into storage,
-* **get**: returns a `value` for a given `key` or `None` if no such `key`,
-* **remove**: removes `<key,value>` pair based on `key`,
-* **set**: sets a new `value` for a given `key` if the `key` is present
+The original model's performance was tested on an out-of-domain test set. Furthermore, modifications and improvements to the original loss function and model architecture were implemented which led to comparable results and, in some cases, better than those from the source paper.
 
-**get** is already implemented
+Phonemes clusterization was also implemented.
 
-Your task is to finish this implementation collaboratively using `git`. Also it is needed to provide a unittest for each method implemented in `Storage` class.
+The files with the code were taken from the author's GitHub and some of them were changed for our tasks.
 
-### What we expect
+## Main Contributions
+The main contributions include:
+1. We replicated the originally proposed model on the TIMIT dataset and profiled the performance.(see `Metrics for Task 1` section [here]([Experiments_ntbk]) and `Main for Training` section [here]([Report_ntbk]))
+2. We analysed the TIMIT-trained model's performance on 'Arabic Speech Corpus', which is an out-of-domain dataset (see `Metrics for Task 2` section [here]([Experiments_ntbk])).
+3. We improved the performance of the model by experimenting with different loss-functions (see `Metrics for Task 3` [here]([Experiments_ntbk])).
+4. We show that the model's performance is improved by applying a windowed Fast Fourier Transform over the audio samples (see lines [34 - 37 here](https://github.com/Albly/UnsupSeg/blob/master/next_frame_classifier.py)). 
+5. We performed clusterization of the phonemes on the TIMIT dataset (see `Saving test results: phonemas, boundaries...` [here]([Report_ntbk])).
 
-1. You are divided into several teams. One member of each team should `fork` this repository. Add your teammates as `contributors`
-1. Team members decide on which functionality they will implement (i.e. method under `storage.py` and a corresponding test under `tests.py`)
-1. After that, members clone forked repository, create a `branch` with a name `feature/add` (or `remove`, or `set`), implement this functionality under that branch
-1. When the functionality is implemented and tested locally push it to the `remote` and open `pull request` to the `master` branch
-1. Other teammates not involved in realization of this very feature are asked to review `pull request` and give a positive feedback under the comments if it's OK. After that, owner of `master` branch merges all these features into `master`
+## Files and folders description
+Experiments_results.ipynb - consists of experiments results (train/test metrics, their averaging and plotting)
+You don't have to execute cells in this file. Just obtain the results.
 
-As a result there should be completed functionality that evidently built in parallel.
+[`Report.ipynb`]([Report_ntbk]) - consists of subblocks for different tasks:
+1. Dataloaders testing (for TIMIT, ArabicSpeech datasets).
+2. Saving real bounds and phoneme labels into hdf5 file (for TIMIT).
+3. Test pre-trained model on a single audio file from the test data set.
+5. Train model on a train data set, test on a pre-trained model.
+7. Test data saving (for convenient following processing, HDF5 files):
+    - from the network: spectral representations of audio, scores, predicted boundaries of phonemes,
+    - from test data set: real boundaries of phonemes, phonemes characters.
+8. Data reading from written files.
+9. Plotting example: real boundaries of phonemes, spectral representations of audio, scores, predicted boundaries of phonemes.
+10. TIMIT data set parser.
+11. Threshold-based algorithm for outliers detecting and comparison of real and predicted boundaries distributions.
 
-### QA
-**Q1**: If I am the owner of the `master` branch should I create `feature` branch or it is possible for me to push it directly to the `master`
+[`config.yaml`](https://github.com/Albly/UnsupSeg/blob/master/config.yaml) - contains model hyperparameters and other parameters like paths to train/test folders etc.
 
-**A1**: Ownership of the `master` branch doesn't provide you rights to push there directly if you're working on a project with a team. Each feature should be accepted with other members of the project. There's also an option in GitHub repo settings that won't give a possibility to push in `origin/master` directly
+[`dataloader.py`](https://github.com/Albly/UnsupSeg/blob/master/dataloader.py) - is responsible for data reading from datasets in the appropriate format.
 
+[`predict.py`](https://github.com/Albly/UnsupSeg/blob/master/predict.py) - to make a prediction on a single audio file and to save real boundaries and scores into hdf5 files.
 
-**Q2**: How to make the pull request
+[`solver.py`](https://github.com/Albly/UnsupSeg/blob/master/solver.py) - solver for the model and its functions (forward, optimizer, building the model etc.).
 
-**A2**: Please follow https://docs.github.com/en/free-pro-team@latest/github/collaborating-with-issues-and-pull-requests/creating-a-pull-request
+[`utils.py`](https://github.com/Albly/UnsupSeg/blob/master/utils.py) - some functions used in other scripts (metrics evaluation, peak detection etc.).
+
+[`scripts folder`](https://github.com/Albly/UnsupSeg/tree/master/scripts) - scripts with model training, and data preprocessing.
+
+# Datasets description
+## TIMIT
+ [TIMIT](https://deepai.org/dataset/timit) is an English language dataset containing recording of 630 speakers with 8 differents dialects (DR1, DR2, ..., DR8) of American English. In the recordings, each individual has 10 sentences that are rich in phonetics, making it a great dataset for phoneme segmentation. It has an audio sampling frequency = 16kHz and has standardized train/test split (2 folders: TRAIN, TEST). 
+
+Our code uses this standard train/test split provided in the TIMIT dataset. All train samples from all dialect regions (DR1, DR2,...,DR8) are placed in one folder. A randomly sampled 10% set of this combined train data is used for validation during training resulting in: 
+- 4158 files for training, 
+- 462 files for  validation and
+- 1680 for testing.
+
+For project audio data (.wav) and phonemes data (.PHN) is required.
+Each .PHN file contains start sample, end sample of phoneme and phoneme symbols.
+Example: 9640 11240 sh, where 9640-start,11240-end,sh-phoneme
+To process original dataset and extract (.wav) and (.PHN) files into their respective train-test folders, a processing script was written (see `big_timit_parser()` in `Report.ipynb`).
+In the algorithm to process files, initial dataloader and code processing function [written by the original paper authors]([Original_paper_GH]) was used as reference.
+
+## Arabic Speech Corpus
+
+For our research, we used data from [Arabic Speech Corpus dataset](http://en.arabicspeechcorpus.com/), which consists of 1813 .wav audio files with spoken utterances with high quality and natural voice and 1813 .TextGrid text files with phoneme labels, timestamps of the boundaries where these occur in the audio files.
+The initial sample rate of audio files was 48 kHz, and as our neural net uses only files with 16kHz we resampled it using bash script with using Sound eXchange (SoX) audio software.
+For processing TextGrid files was used python library “textgrid”, which extracted all needed information from a file. As timestamps in a dataset in the time domain, we multiplied them to sample rate (16 000), to have sample stamps.
+This dataset was used for the testing procedure of the neural network that was trained on the TIMIT dataset, so all 1813 files were used for testing. 
+The size of dataset is ~500 MB
+
+# Usage
+### Prerequisites
+- Linux or macOS
+- conda
+- An active account on [`Weights and Biases`](wandb.ai)
+### Clone repository 
+```sh
+git clone https://github.com/Albly/UnsupSeg.git
+cd UnsupSeg
+```
+# Download data folder
+The training data can be downloaded from [here](https://drive.google.com/file/d/17jcRiGfNwzqUcY9c-VmutNa2LrO4PBlf/view?usp=sharing). This folder contains 2 data sets and hdf5 files written on the TIMIT data set.
+
+### Setup environment
+```
+conda create --name unsup_seg --file requirements.txt
+conda activate unsup_seg
+conda install -c conda-forge jupyterlab
+```
+### Data preperation (better to use prepared folder 'data')
+This example shows how to prepare the TIMIT dataset for training. It can be adopted for other datasets as well.
+1. Download the TIMIT dataset from https://data.deepai.org/timit.zip
+2. Extract the data into `/other/timit_big/data`
+3. Open `Report.ipynb`  from the working directory
+    ```
+    jupyter notebook Report.ipynb
+    ```
+4. Run the cell under `TIMIT parser` to parse the data into train and test. The parsed data will be stored in `other/timit_big_parsed` in the format described in the data structure section described. 
+5. Copy the created train and test folders from `other/timit_big_parsed` into your prefered data location according to your `timit_path` in `config.yaml`
+    ```
+    cp -avr /other/timit_big_parsed /path/to/timit/timit
+    ```
+
+### Configuration
+Before using the code, configure the paths to the datasets eg timit in `config.yaml`. The directory should contain train,test and val subfolders (see data-structure description below). Configure other parameters relevant for training, validation and testing in `config.yaml`
+```
+...
+# DATA
+timit_path /path/to/timit/timit
+...
+```
+### Train / test / validation data structure
+In the file config.yaml specify the directories for the location of datasets.
+For each datased folder should look as follows:
+```
+UndupSeg
+│
+│
+data + intermediate_data, utils.py, solver.py, predict.py,
+│      dataloader.py, config.yaml, Report.ipynb,Experiments_results.ipynb
+│
+datasets
+│
+│
+timit (same for Arabic Speech Corpus: arabic)
+│
+│
+ └───val
+  │   │   X.wav (or X.WAW)
+  │   └─  X.phn (or X.TextGrid)
+  │
+  └───test
+  │   │   Y.wav
+  │   └─  Y.phn
+  │
+  └───train
+      │   Z.wav
+      └─  Z.phn
+```
+# How to reproduce results?
+1. Implement pre requirements: setup environment, prepare the data, organise folder structure
+2. Open `Report.ipynb`
+3. First of all - to be sure that data loaders are working and read the dataset in appropriate format (the result of cell execution should be the same)
+4. The second find `Test on single audio` in [`Report.ipynb`]([Report_ntbk]) and try running the code under it and obtain results
+5. The third find `Main for training and testing` in [`Report.ipynb`]([Report_ntbk])  and run the corresponding cells. Don't forget to edit config.yaml to set up hyperparameters and to set the mode (train/test). For the train ckpt: - relative path to the model. For the test ckpt: null. Also, choose the dataset folder (data) from the datasets you have and correct paths to them.
+6. Obtain the training/testing procedure.
+7. To obtain examples of data from the core of the network you can use the code under `Plot example of data: spectral reprezentation, score and boundaries` in [`Report.ipynb`]([Report_ntbk])
+8. To implement outliers detecting based on duration threshold, run cells under `Outliers detecting (by phoneme duration)` in [`Report.ipynb`]([Report_ntbk])
