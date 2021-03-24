@@ -15,11 +15,11 @@ The files with the code were taken from the author's GitHub and some of them wer
 
 ## Main Contributions
 The main contributions include:
-1. We replicated the originally proposed model on the TIMIT dataset and profiled the performance.(see `Metrics for Task 1` section [here]([Experiments_ntbk]) and `Main for Training` section [here]([Report_ntbk]))
-2. We analysed the TIMIT-trained model's performance on 'Arabic Speech Corpus', which is an out-of-domain dataset (see `Metrics for Task 2` section [here]([Experiments_ntbk])).
-3. We improved the performance of the model by experimenting with different loss-functions (see `Metrics for Task 3` [here]([Experiments_ntbk])).
+1. We replicated the originally proposed model on the TIMIT dataset and profiled the performance.(see `Metrics for Task 1` section [here](https://github.com/Albly/UnsupSeg/blob/master/Experiments_results.ipynb ) and `Main for Training` section [here](https://github.com/Albly/UnsupSeg/blob/master/Report.ipynb))
+2. We analysed the TIMIT-trained model's performance on 'Arabic Speech Corpus', which is an out-of-domain dataset (see `Metrics for Task 2` section [here](https://github.com/Albly/UnsupSeg/blob/master/Experiments_results.ipynb )).
+3. We improved the performance of the model by experimenting with different loss-functions (see `Metrics for Task 3` [here](https://github.com/Albly/UnsupSeg/blob/master/Experiments_results.ipynb )).
 4. We show that the model's performance is improved by applying a windowed Fast Fourier Transform over the audio samples (see lines [34 - 37 here](https://github.com/Albly/UnsupSeg/blob/master/next_frame_classifier.py)). 
-5. We performed clusterization of the phonemes on the TIMIT dataset (see `Saving test results: phonemas, boundaries...` [here]([Report_ntbk])).
+5. We performed clusterization of the phonemes on the TIMIT dataset (see `Saving test results: phonemas, boundaries...` [here](https://github.com/Albly/UnsupSeg/blob/master/Report.ipynb)).
 
 ## Files and folders description
 Experiments_results.ipynb - consists of experiments results (train/test metrics, their averaging and plotting)
@@ -63,7 +63,7 @@ For project audio data (.wav) and phonemes data (.PHN) is required.
 Each .PHN file contains start sample, end sample of phoneme and phoneme symbols.
 Example: 9640 11240 sh, where 9640-start,11240-end,sh-phoneme
 To process original dataset and extract (.wav) and (.PHN) files into their respective train-test folders, a processing script was written (see `big_timit_parser()` in `Report.ipynb`).
-In the algorithm to process files, initial dataloader and code processing function [written by the original paper authors]([Original_paper_GH]) was used as reference.
+In the algorithm to process files, initial dataloader and code processing function [written by the original paper authors](https://arxiv.org/abs/2007.13465) was used as reference.
 
 ## Arabic Speech Corpus
 
@@ -146,8 +146,8 @@ timit (same for Arabic Speech Corpus: arabic)
 1. Implement pre requirements: setup environment, prepare the data, organise folder structure
 2. Open `Report.ipynb`
 3. First of all - to be sure that data loaders are working and read the dataset in appropriate format (the result of cell execution should be the same)
-4. The second find `Test on single audio` in [`Report.ipynb`]([Report_ntbk]) and try running the code under it and obtain results
-5. The third find `Main for training and testing` in [`Report.ipynb`]([Report_ntbk])  and run the corresponding cells. Don't forget to edit config.yaml to set up hyperparameters and to set the mode (train/test). For the train ckpt: - relative path to the model. For the test ckpt: null. Also, choose the dataset folder (data) from the datasets you have and correct paths to them.
+4. The second find `Test on single audio` in [`Report.ipynb`](https://github.com/Albly/UnsupSeg/blob/master/Report.ipynb) and try running the code under it and obtain results
+5. The third find `Main for training and testing` in [`Report.ipynb`](https://github.com/Albly/UnsupSeg/blob/master/Report.ipynb)  and run the corresponding cells. Don't forget to edit config.yaml to set up hyperparameters and to set the mode (train/test). For the train ckpt: - relative path to the model. For the test ckpt: null. Also, choose the dataset folder (data) from the datasets you have and correct paths to them.
 6. Obtain the training/testing procedure.
-7. To obtain examples of data from the core of the network you can use the code under `Plot example of data: spectral reprezentation, score and boundaries` in [`Report.ipynb`]([Report_ntbk])
-8. To implement outliers detecting based on duration threshold, run cells under `Outliers detecting (by phoneme duration)` in [`Report.ipynb`]([Report_ntbk])
+7. To obtain examples of data from the core of the network you can use the code under `Plot example of data: spectral reprezentation, score and boundaries` in [`Report.ipynb`](https://github.com/Albly/UnsupSeg/blob/master/Report.ipynb)
+8. To implement outliers detecting based on duration threshold, run cells under `Outliers detecting (by phoneme duration)` in [`Report.ipynb`](https://github.com/Albly/UnsupSeg/blob/master/Report.ipynb)
