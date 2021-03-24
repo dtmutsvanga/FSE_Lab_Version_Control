@@ -1,7 +1,7 @@
-[Experiments_ntbk]: https://github.com/Albly/UnsupSeg/blob/master/Experiments_results.ipynb 
-[Report_ntbk]: https://github.com/Albly/UnsupSeg/blob/master/Report.ipynb
-[Original_paper_GH]: https://github.com/felixkreuk/UnsupSeg
-[Original_paper]: https://arxiv.org/abs/2007.13465
+[Experiments_ntbk]:https://github.com/Albly/UnsupSeg/blob/master/Experiments_results.ipynb 
+[Report_ntbk]:https://github.com/Albly/UnsupSeg/blob/master/Report.ipynb
+[Original_paper_GH]:https://github.com/felixkreuk/UnsupSeg
+[Original_paper]:https://arxiv.org/abs/2007.13465
 
 # Self-Supervised Contrastive Learning for Unsupervised Phoneme Segmentation. ML course project, Skoltech.
 ## General Description
